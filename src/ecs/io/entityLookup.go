@@ -2,6 +2,9 @@ package io
 
 import (
 	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 type EntityLookup struct {
@@ -20,13 +23,7 @@ type EntityNode struct {
 
 type ComponentNode struct {
 	ComponentType   string
-	ComponentValues map[string]*ValueNode
-}
-
-type ValueNode struct {
-	IsComponent    bool
-	ComponentValue *ComponentNode
-	BasicValue     string
+	ComponentValues map[string]string
 }
 
 func NewEntityLookup() *EntityLookup {
@@ -53,7 +50,8 @@ func (lookup *EntityLookup) AddEntityNode(node *EntityNode) {
 
 func (lookup *EntityLookup) CreateEntityNode(searchName string, abstract bool, parentName string, components []*ComponentNode) {
 	var children []*EntityNode
-	lookup.AddEntityNode(EntityNode{searchName, abstract, lookup.GetEntityNode(parentName), children, components})
+	entity := EntityNode{searchName, abstract, lookup.GetEntityNode(parentName), children, components}
+	lookup.AddEntityNode(&entity)
 }
 
 func (lookup *EntityLookup) HasEntityName(entityName string) bool {
@@ -67,6 +65,47 @@ func (lookup *EntityLookup) GetEntityNode(searchName string) *EntityNode {
 	} else {
 		fmt.Println("Err: Could not retrieve Entity type: " + searchName)
 		return nil
+	}
+}
+
+func CreateComponentNode(componentType string, values map[string]string) *ComponentNode {
+	component := ComponentNode{componentType, values}
+	return &component
+}
+
+func (lookup *EntityLookup) CreateFullEntityNode(searchName string, abstract bool, parentName string, components []*ComponentNode) {
+	lookup.CreateEntityNode(searchName, abstract, parentName, components)
+}
+
+func (lookup *EntityLookup) ParseEntityData(text string) {
+	entityRegex, _ := regexp.Compile(EntityRegex)
+	entityMatches := entityRegex.FindAllString(text, -1)
+
+	for _, entityMatch := range entityMatches {
+		entityNode, parentName := ParseEntity(entityMatch)
+		entityNode.Parent = lookup.GetEntityNode(parentName)
+		lookup.AddEntityNode(entityNode)
+	}
+}
+
+func (lookup *EntityLookup) PrintEntityTree() {
+	lookup.PrintEntity(lookup.Root, 0)
+}
+
+func (lookup *EntityLookup) PrintEntity(entityNode *EntityNode, indent int) {
+	indentString := strings.Repeat("    ", indent)
+	fmt.Println(indentString + "Name: " + entityNode.SearchName)
+	fmt.Println(indentString + " - Abstract: " + strconv.FormatBool(entityNode.IsAbstract))
+	fmt.Println(indentString + " - Components:")
+	for _, componentNode := range entityNode.Components {
+		fmt.Println(indentString + "   - " + componentNode.ComponentType)
+		for field, value := range componentNode.ComponentValues {
+			fmt.Println(indentString + "     - " + field + " : " + value)
+		}
+	}
+	fmt.Println(indentString + " - Children:")
+	for _, childNode := range entityNode.Children {
+		lookup.PrintEntity(childNode, indent+1)
 	}
 }
 

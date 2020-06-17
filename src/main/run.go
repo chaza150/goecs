@@ -14,7 +14,7 @@ import (
 	"ecs/entity"
 	"ecs/io"
 	"ecs/system"
-	//"fmt"
+	"fmt"
 )
 
 func main() {
@@ -39,7 +39,15 @@ func run() {
 
 	ecs.SysManager.AddSystem(shoutSys)
 
-	io.LoadFile()
+	entityLookup := io.NewEntityLookup()
+
+	entityLookup.ParseEntityData(io.LoadFile())
+
+	//compNode := parsing.ParseComponent(io.LoadFile())
+
+	entityLookup.PrintEntityTree()
+
+	fmt.Println(entityLookup.GetEntityNode("thing").Components[0].ComponentValues[" "])
 
 	//SETUP For Pixel Window
 	cfg := pixelgl.WindowConfig{
@@ -54,7 +62,7 @@ func run() {
 	}
 
 	for !win.Closed() {
-		ecs.UpdateSystems()
+		//ecs.UpdateSystems()
 
 		win.Update()
 	}

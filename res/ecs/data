@@ -1,0 +1,18 @@
+"thing" ? "base" {
+	"Position" : {
+		"x" : 20,
+		"y" : 100
+	}
+}
+
+"object" ? "thing" {
+	"Movable" : {
+		"Resists" : true
+	}
+}
+
+"ghost" : "thing" {
+	"Visible" : {
+		"Transparent" : true
+	}
+}
