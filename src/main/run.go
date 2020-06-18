@@ -11,7 +11,6 @@ import (
 
 	"ecs"
 	"ecs/system"
-	"fmt"
 )
 
 func main() {
@@ -19,15 +18,6 @@ func main() {
 }
 
 func run() {
-	ecs := ecs.NewECS()
-
-	ecs.SysManager.AddSystem(system.ShoutSystem{})
-
-	ecs.LoadEntityTypeData("res/ecs/data")
-
-	ecs.InstantiateEntity("object", "obj")
-
-	ecs.EntityLookup.PrintEntityTree()
 
 	//SETUP For Pixel Window
 	cfg := pixelgl.WindowConfig{
@@ -41,8 +31,22 @@ func run() {
 		panic(err)
 	}
 
+	ecs := ecs.NewECS(win)
+
+	ecs.SysManager.AddSystem(system.ShoutSystem{})
+	ecs.SysManager.AddSystem(system.InputSystem{})
+
+	ecs.LoadEntityTypeData("res/ecs/data")
+	ecs.EntityLookup.PrintEntityTree()
+
+	ecs.InstantiateEntity("input", "input")
+
 	for !win.Closed() {
-		//ecs.UpdateSystems()
+		ecs.UpdateSystems()
+
+		if win.Pressed(pixelgl.MouseButtonLeft) {
+			win.SetCursorDisabled()
+		}
 
 		win.Update()
 	}

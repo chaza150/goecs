@@ -7,11 +7,11 @@ import (
 )
 
 const (
-	ValueRegex      = `(\".+\"|\d+|\d+(\.\d+)?|(true|false)|(\[.*\]))`
+	ValueRegex      = `(\".+\"|-?\d+(\.\d+)?|-?\d+|(true|false)|(\[.*\]))`
 	listRegex       = `\[\s*(((\s*\".+\"\s*,\s*)*(\s*\".+\"\s*))|((\s*\d+\s*,\s*)*(\s*\d+\s*))|((\s*\d+(\.\d+)?\s*,\s*)*(\s*\d+(\.\d+)?\s*))|((\s*(true|false)\s*,\s*)*(\s*(true|false)\s*)))\]`
 	stringListRegex = `\[\s*((\s*\".+\"\s*,\s*)*(\s*\".+\"\s*))\]`
-	intListRegex    = `\[\s*((\s*\d+\s*,\s*)*(\s*\d+\s*))\]`
-	floatListRegex  = `\[\s*((\s*\d+(\.\d+)?\s*,\s*)*(\s*\d+(\.\d+)?\s*))\]`
+	intListRegex    = `\[\s*((\s*-?\d+\s*,\s*)*(\s*-?\d+\s*))\]`
+	floatListRegex  = `\[\s*((\s*-?\d+(\.\d+)?\s*,\s*)*(\s*-?\d+(\.\d+)?\s*))\]`
 	boolListRegex   = `\[\s*((\s*(true|false)\s*,\s*)*(\s*(true|false)\s*))\]`
 )
 
