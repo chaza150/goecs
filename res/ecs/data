@@ -1,18 +1,15 @@
 "thing" ? "base" {
+	"Shout" : {
+		"ShoutText" : "false"
+	}
 	"Position" : {
-		"x" : 20,
-		"y" : 100
+		"X" : 20,
+		"Y" : 100
 	}
 }
 
-"object" ? "thing" {
-	"Movable" : {
-		"Resists" : true
-	}
-}
-
-"ghost" : "thing" {
-	"Visible" : {
-		"Transparent" : true
+"object" : "thing" {
+	"Shout" : {
+		"ShoutText" : "true"
 	}
 }

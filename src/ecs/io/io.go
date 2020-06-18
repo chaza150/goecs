@@ -4,8 +4,8 @@ import (
 	"io/ioutil"
 )
 
-func LoadFile() string {
-	data, err := ioutil.ReadFile("res/ecs/data")
+func LoadFile(filePath string) string {
+	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		panic(err)
 	}

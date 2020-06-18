@@ -10,9 +10,6 @@ import (
 	_ "image/png"
 
 	"ecs"
-	"ecs/component"
-	"ecs/entity"
-	"ecs/io"
 	"ecs/system"
 	"fmt"
 )
@@ -23,31 +20,14 @@ func main() {
 
 func run() {
 	ecs := ecs.NewECS()
-	ecs.EntManager.AddNewEntity("e1")
-	ecs.EntManager.AddNewEntity("e2")
-	ecs.EntManager.AddNewEntity("e3")
-	ecs.EntManager.AddNewEntity("e4")
 
-	ecs.EntManager.AddEntity(entity.NewPlayerEntity())
+	ecs.SysManager.AddSystem(system.ShoutSystem{})
 
-	ecs.EntManager.GetEntity("e1").AddComponent(component.ShoutComponent{"e1"})
-	ecs.EntManager.GetEntity("e2").AddComponent(component.ShoutComponent{"e2"})
-	ecs.EntManager.GetEntity("e3").AddComponent(component.ShoutComponent{"e3"})
-	ecs.EntManager.GetEntity("e4").AddComponent(component.ShoutComponent{"e4"})
+	ecs.LoadEntityTypeData("res/ecs/data")
 
-	shoutSys := system.ShoutSystem{}
+	ecs.InstantiateEntity("object", "obj")
 
-	ecs.SysManager.AddSystem(shoutSys)
-
-	entityLookup := io.NewEntityLookup()
-
-	entityLookup.ParseEntityData(io.LoadFile())
-
-	//compNode := parsing.ParseComponent(io.LoadFile())
-
-	entityLookup.PrintEntityTree()
-
-	fmt.Println(entityLookup.GetEntityNode("thing").Components[0].ComponentValues[" "])
+	ecs.EntityLookup.PrintEntityTree()
 
 	//SETUP For Pixel Window
 	cfg := pixelgl.WindowConfig{
