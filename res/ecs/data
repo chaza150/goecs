@@ -1,15 +1,8 @@
-"thing" ? "base" {
-	"Shout" : {
-		"ShoutText" : "false"
-	}
-	"Position" : {
-		"X" : 20,
-		"Y" : 100
-	}
-}
-
-"object" : "thing" {
-	"Shout" : {
-		"ShoutText" : "true"
+"input" : "base" {
+	"Input" : {
+		"Window" : "WINDOW",
+		"MouseDeltaX" : -1,
+		"MouseDeltaY" : 0,
+		"Stopped" : false
 	}
 }

@@ -2,12 +2,14 @@ package io
 
 import (
 	"fmt"
+	"github.com/faiface/pixel/pixelgl"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
 type EntityLookup struct {
+	Window           *pixelgl.Window
 	Root             *EntityNode
 	QuickMap         map[string]*EntityNode
 	QuickConcreteMap map[string]*EntityNode
@@ -26,13 +28,13 @@ type ComponentNode struct {
 	ComponentValues map[string]string
 }
 
-func NewEntityLookup() *EntityLookup {
+func NewEntityLookup(window *pixelgl.Window) *EntityLookup {
 	var children []*EntityNode
 	var quickMap map[string]*EntityNode
 	quickMap = make(map[string]*EntityNode)
 	root := EntityNode{SearchName: "base", IsAbstract: true, Parent: nil, Children: children}
 	quickMap[root.SearchName] = &root
-	entityLookup := EntityLookup{Root: &root, QuickMap: quickMap, QuickConcreteMap: make(map[string]*EntityNode)}
+	entityLookup := EntityLookup{Window: window, Root: &root, QuickMap: quickMap, QuickConcreteMap: make(map[string]*EntityNode)}
 	return &entityLookup
 }
 
