@@ -9,7 +9,6 @@ import (
 var componentNecessaryValues = map[string][]string{
 	"Shout":    []string{"ShoutText"},
 	"Position": []string{"X", "Y"},
-	"Input":    []string{"Window", "MouseDeltaX", "MouseDeltaY", "Stopped"},
 }
 
 func (lookup *EntityLookup) InstantiateEntity(searchName string, entityID string) *entity.Entity {
@@ -17,7 +16,7 @@ func (lookup *EntityLookup) InstantiateEntity(searchName string, entityID string
 	if entityNode != nil {
 
 		entity := entity.NewEntity(entityID)
-		lookup.AddComponentsFromEntityNode(entityNode, entity)
+		AddComponentsFromEntityNode(entityNode, entity)
 
 		return entity
 
@@ -27,20 +26,20 @@ func (lookup *EntityLookup) InstantiateEntity(searchName string, entityID string
 	}
 }
 
-func (lookup *EntityLookup) AddComponentsFromEntityNode(node *EntityNode, entity *entity.Entity) {
+func AddComponentsFromEntityNode(node *EntityNode, entity *entity.Entity) {
 	for _, compNode := range node.Components {
-		lookup.AddComponentToEntityFromNode(compNode.ComponentType, compNode.ComponentValues, entity)
+		AddComponentToEntityFromNode(compNode.ComponentType, compNode.ComponentValues, entity)
 	}
 	if node.Parent != nil {
 		fmt.Println("adding components from parent: " + node.Parent.SearchName)
-		lookup.AddComponentsFromEntityNode(node.Parent, entity)
+		AddComponentsFromEntityNode(node.Parent, entity)
 	}
 }
 
 //Adds a Specific (componentType) Component To an Entity with values (values)
-func (lookup *EntityLookup) AddComponentToEntityFromNode(componentType string, values map[string]string, entity *entity.Entity) {
+func AddComponentToEntityFromNode(componentType string, values map[string]string, entity *entity.Entity) {
 	//Only add component if all necessary values are present
-	if lookup.ComponentHasNecessaryValues(componentType, values) {
+	if ComponentHasNecessaryValues(componentType, values) {
 		//Based on the string componentType, add the respective component
 		var err error = nil
 
@@ -49,8 +48,6 @@ func (lookup *EntityLookup) AddComponentToEntityFromNode(componentType string, v
 			err = entity.AddComponent(component.ShoutComponent{ShoutText: ParseQuotedString(values["ShoutText"])})
 		case "Position":
 			err = entity.AddComponent(component.PositionComponent{X: ParseInt(values["X"]), Y: ParseInt(values["Y"])})
-		case "Input":
-			err = entity.AddComponent(component.InputComponent{Window: lookup.Window, MouseDeltaX: ParseInt(values["MouseDeltaX"]), MouseDeltaY: ParseInt(values["MouseDeltaY"]), Stopped: ParseBool(values["Stopped"])})
 		default:
 			fmt.Println("Entity, " + entity.ID + "'s \"" + componentType + "\" component, does not have parsing rules")
 		}
@@ -64,7 +61,7 @@ func (lookup *EntityLookup) AddComponentToEntityFromNode(componentType string, v
 	}
 }
 
-func (lookup *EntityLookup) ComponentHasNecessaryValues(componentType string, values map[string]string) bool {
+func ComponentHasNecessaryValues(componentType string, values map[string]string) bool {
 	necessaryValues, ok := componentNecessaryValues[componentType]
 	if ok {
 		for _, valueName := range necessaryValues {

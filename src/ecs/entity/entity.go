@@ -119,14 +119,6 @@ func (e *Entity) GetComponent(compName string) (*component.Component, error) {
 	}
 }
 
-func (e *Entity) GetProperComponent(compName string) (component.Component, error) {
-	if e.HasComponentByName(compName) {
-		return *(e.Components[compName]), nil
-	} else {
-		return nil, ComponentNotPresentError{e.ID, compName}
-	}
-}
-
 func NewEntity(ID string) *Entity {
 	return &Entity{ID: ID}
 }
@@ -134,10 +126,4 @@ func NewEntity(ID string) *Entity {
 func (e *Entity) With(comp component.Component) *Entity {
 	e.AddComponent(comp)
 	return e
-}
-
-func (e *Entity) ReplaceComponent(compName string, component component.Component) {
-	if e.HasComponentByName(compName) {
-		e.Components[compName] = &component
-	}
 }
