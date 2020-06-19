@@ -1,14 +1,16 @@
 package io
 
 import (
+	"fmt"
 	"regexp"
 )
 
 const (
-	EntityRegex = `\s*\"\w+\"\s*(:|\?)\s*\"\w+\"\s*{((` + ComponentRegex + `,)*(` + ComponentRegex + `)+|\s*)\s*}`
+	EntityRegex = `\s*\"\w+\"\s*(:|\?)\s*\"\w+\"\s*{((` + ComponentRegex + `,)*(` + ComponentRegex + `)|\s*)\s*}`
 )
 
 func ParseEntity(text string) (*EntityNode, string) {
+	fmt.Println(EntityRegex)
 	if isValidEntity(text) {
 		nameRegex, _ := regexp.Compile(`\"\w+\"`)
 		searchName := ParseQuotedString(nameRegex.FindString(text))

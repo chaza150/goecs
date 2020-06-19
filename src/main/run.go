@@ -31,10 +31,10 @@ func run() {
 		panic(err)
 	}
 
-	ecs := ecs.NewECS(win)
+	ecs := ecs.NewECS()
 
 	ecs.SysManager.AddSystem(system.ShoutSystem{})
-	ecs.SysManager.AddSystem(system.InputSystem{})
+	ecs.SysManager.AddSystem(system.InputSystem{win})
 
 	ecs.LoadEntityTypeData("res/ecs/data")
 	ecs.EntityLookup.PrintEntityTree()

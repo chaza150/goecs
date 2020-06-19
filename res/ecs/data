@@ -1,8 +1,6 @@
 "input" : "base" {
-	"Input" : {
-		"Window" : "WINDOW",
-		"MouseDeltaX" : -1,
-		"MouseDeltaY" : 0,
-		"Stopped" : false
+	"Input" : {},
+	"Shout" : {
+		"ShoutText" : "INPUT"
 	}
 }

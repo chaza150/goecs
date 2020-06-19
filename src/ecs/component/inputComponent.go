@@ -1,13 +1,10 @@
 package component
 
-import (
-	"github.com/faiface/pixel/pixelgl"
-)
-
 type InputComponent struct {
-	Window      *pixelgl.Window
-	MouseDeltaX int
-	MouseDeltaY int
+	MouseX      float64
+	MouseY      float64
+	MouseDeltaX float64
+	MouseDeltaY float64
 	Stopped     bool
 }
 

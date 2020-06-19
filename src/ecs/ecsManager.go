@@ -4,7 +4,6 @@ import (
 	"ecs/entity"
 	"ecs/io"
 	"fmt"
-	"github.com/faiface/pixel/pixelgl"
 )
 
 type ECS struct {
@@ -13,17 +12,17 @@ type ECS struct {
 	EntityLookup *io.EntityLookup
 }
 
-func NewECS(window *pixelgl.Window) ECS {
+func NewECS() ECS {
 	em := NewEntityManager()
 	sm := NewSystemManager()
-	lookup := io.NewEntityLookup(window)
+	lookup := io.NewEntityLookup()
 	return ECS{&em, &sm, lookup}
 }
 
 func (ecs *ECS) UpdateSystems() {
 	for _, sys := range ecs.SysManager.Systems {
 		fmt.Println("Updating " + (*sys).GetName())
-		(*sys).Update(ecs.EntManager.GetEntitiesAsSlice())
+		(*sys).Update(ecs.EntManager.Entities)
 	}
 }
 
