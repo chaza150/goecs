@@ -12,7 +12,7 @@ type InputSystem struct {
 	Window *pixelgl.Window
 }
 
-func (sys InputSystem) Update(entities []*entity.Entity) {
+func (sys InputSystem) Update(entities map[string]*entity.Entity) {
 	for _, ent := range entities {
 		//fmt.Println(ent.ID)
 		if ent.HasComponentByName("Input") {
@@ -37,7 +37,7 @@ func (sys InputSystem) Update(entities []*entity.Entity) {
 	}
 }
 
-func (sys InputSystem) GoUpdate(entities []*entity.Entity) error {
+func (sys InputSystem) GoUpdate(entities map[string]*entity.Entity) error {
 	return errors.New("Unable to Update in multithreaded mode!")
 }
 

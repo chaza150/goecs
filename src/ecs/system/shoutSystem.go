@@ -9,7 +9,7 @@ import (
 type ShoutSystem struct {
 }
 
-func (sys ShoutSystem) Update(entities []*entity.Entity) {
+func (sys ShoutSystem) Update(entities map[string]*entity.Entity) {
 	for _, ent := range entities {
 		//fmt.Println(ent.ID)
 		if ent.HasComponentByName("Shout") {
@@ -19,7 +19,7 @@ func (sys ShoutSystem) Update(entities []*entity.Entity) {
 	}
 }
 
-func (sys ShoutSystem) GoUpdate(entities []*entity.Entity) error {
+func (sys ShoutSystem) GoUpdate(entities map[string]*entity.Entity) error {
 	for _, ent := range entities {
 		if ent.HasComponentByName("Shout") {
 			shoutComponent, _ := ent.GetComponent("Shout")

@@ -22,7 +22,7 @@ func NewECS() ECS {
 func (ecs *ECS) UpdateSystems() {
 	for _, sys := range ecs.SysManager.Systems {
 		fmt.Println("Updating " + (*sys).GetName())
-		(*sys).Update(ecs.EntManager.GetEntitiesAsSlice())
+		(*sys).Update(ecs.EntManager.Entities)
 	}
 }
 
