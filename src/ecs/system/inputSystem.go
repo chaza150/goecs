@@ -8,26 +8,30 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 )
 
-type InputSystem struct{}
+type InputSystem struct {
+	Window *pixelgl.Window
+}
 
 func (sys InputSystem) Update(entities []*entity.Entity) {
 	for _, ent := range entities {
 		//fmt.Println(ent.ID)
 		if ent.HasComponentByName("Input") {
-			inputComponent, _ := ent.GetProperComponent("Input")
-			inputComp := (inputComponent).(component.InputComponent)
 
-			win := inputComp.Window
+			X := sys.Window.MousePosition().X
+			Y := sys.Window.MousePosition().Y
+			deltaX := X - sys.Window.MousePreviousPosition().X
+			deltaY := Y - sys.Window.MousePreviousPosition().Y
 
-			ent.ReplaceComponent("Input", component.InputComponent{Window: win, MouseDeltaX: int(win.MousePosition().X - win.MousePreviousPosition().X), MouseDeltaY: int(win.MousePosition().Y - win.MousePreviousPosition().Y), Stopped: win.Pressed(pixelgl.KeyR)})
+			stopped := sys.Window.Pressed(pixelgl.KeyR)
 
-			fmt.Println("X: ", inputComp.MouseDeltaX, ", Y: ", inputComp.MouseDeltaY)
+			ent.ReplaceComponent("Input", component.InputComponent{MouseDeltaX: deltaX, MouseDeltaY: deltaY, Stopped: stopped})
 
-			inComp, _ := ent.GetProperComponent("Input")
-			if inComp.(component.InputComponent).Stopped {
+			fmt.Println("X: ", deltaX, ", Y: ", deltaY)
+
+			if stopped {
 				fmt.Println("Stopping")
-				win.SetCursorVisible(true)
-				win.SetClosed(true)
+				sys.Window.SetCursorVisible(true)
+				sys.Window.SetClosed(true)
 			}
 		}
 	}

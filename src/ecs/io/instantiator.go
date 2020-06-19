@@ -9,7 +9,7 @@ import (
 var componentNecessaryValues = map[string][]string{
 	"Shout":    []string{"ShoutText"},
 	"Position": []string{"X", "Y"},
-	"Input":    []string{"Window", "MouseDeltaX", "MouseDeltaY", "Stopped"},
+	"Input":    []string{},
 }
 
 func (lookup *EntityLookup) InstantiateEntity(searchName string, entityID string) *entity.Entity {
@@ -32,7 +32,6 @@ func (lookup *EntityLookup) AddComponentsFromEntityNode(node *EntityNode, entity
 		lookup.AddComponentToEntityFromNode(compNode.ComponentType, compNode.ComponentValues, entity)
 	}
 	if node.Parent != nil {
-		fmt.Println("adding components from parent: " + node.Parent.SearchName)
 		lookup.AddComponentsFromEntityNode(node.Parent, entity)
 	}
 }
@@ -50,7 +49,7 @@ func (lookup *EntityLookup) AddComponentToEntityFromNode(componentType string, v
 		case "Position":
 			err = entity.AddComponent(component.PositionComponent{X: ParseInt(values["X"]), Y: ParseInt(values["Y"])})
 		case "Input":
-			err = entity.AddComponent(component.InputComponent{Window: lookup.Window, MouseDeltaX: ParseInt(values["MouseDeltaX"]), MouseDeltaY: ParseInt(values["MouseDeltaY"]), Stopped: ParseBool(values["Stopped"])})
+			err = entity.AddComponent(component.InputComponent{MouseX: 0, MouseY: 0, MouseDeltaX: 0, MouseDeltaY: 0, Stopped: false})
 		default:
 			fmt.Println("Entity, " + entity.ID + "'s \"" + componentType + "\" component, does not have parsing rules")
 		}

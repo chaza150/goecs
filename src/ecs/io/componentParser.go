@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	ComponentRegex = `\s*\"\w+\"\s*:\s*{\s*(\"\w+\"\s*:\s*` + ValueRegex + `\s*,\s*)*(\"\w+\"\s*:\s*` + ValueRegex + `)\s*}`
+	ComponentRegex = `\s*\"\w+\"\s*:\s*{\s*((\"\w+\"\s*:\s*` + ValueRegex + `\s*,\s*)*(\"\w+\"\s*:\s*` + ValueRegex + `))?\s*}`
 )
 
 func ParseComponent(text string) *ComponentNode {

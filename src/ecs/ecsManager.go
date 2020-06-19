@@ -4,7 +4,6 @@ import (
 	"ecs/entity"
 	"ecs/io"
 	"fmt"
-	"github.com/faiface/pixel/pixelgl"
 )
 
 type ECS struct {
@@ -13,10 +12,10 @@ type ECS struct {
 	EntityLookup *io.EntityLookup
 }
 
-func NewECS(window *pixelgl.Window) ECS {
+func NewECS() ECS {
 	em := NewEntityManager()
 	sm := NewSystemManager()
-	lookup := io.NewEntityLookup(window)
+	lookup := io.NewEntityLookup()
 	return ECS{&em, &sm, lookup}
 }
 
